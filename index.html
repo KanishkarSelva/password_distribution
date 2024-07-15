@@ -50,12 +50,14 @@
         <div id="result" class="result"></div>
     </div>
     <script>
-        const credentials = {
-            "abhinayreddy7070@gmail.comHASIMABHRED": {name: "Abhinay Reddy", password: "fL4rN1tT3Y"},
-            "vishnu123prem@gmail.comHASIMABHVAL": {name: "Abhijeeth Velav", password: "j4uB3oQ6n"},
-            "abijithanil@gmail.comHASIMABIANI": {name: "Abijith Anil", password: "bK7sj2hQ8Y"},
-            // Add all other credentials here in the same format
-        };
+        let credentials = {};
+
+        fetch('credentials.json')
+            .then(response => response.json())
+            .then(data => {
+                credentials = data;
+            })
+            .catch(error => console.error('Error loading credentials:', error));
 
         function getPassword() {
             const email = document.getElementById('email').value;
