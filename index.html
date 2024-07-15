@@ -51,9 +51,9 @@
     </div>
     <script>
         const credentials = {
-            "abhinayreddy7070@gmail.comHASIMABHRED": "fL4rN1tT3Y",
-            "vishnu123prem@gmail.comHASIMABHVAL": "j4uB3oQ6n",
-            "abijithanil@gmail.comHASIMABIANI": "bK7sj2hQ8Y",
+            "abhinayreddy7070@gmail.comHASIMABHRED": {name: "Abhinay Reddy", password: "fL4rN1tT3Y"},
+            "vishnu123prem@gmail.comHASIMABHVAL": {name: "Abhijeeth Velav", password: "j4uB3oQ6n"},
+            "abijithanil@gmail.comHASIMABIANI": {name: "Abijith Anil", password: "bK7sj2hQ8Y"},
             // Add all other credentials here in the same format
         };
 
@@ -61,11 +61,11 @@
             const email = document.getElementById('email').value;
             const accountId = document.getElementById('accountId').value;
             const key = email + accountId;
-            const password = credentials[key];
+            const credential = credentials[key];
 
             const resultDiv = document.getElementById('result');
-            if (password) {
-                resultDiv.innerHTML = `<p>Password: ${password}</p>`;
+            if (credential) {
+                resultDiv.innerHTML = `<p>Hey, ${credential.name}, your password is: ${credential.password}</p>`;
             } else {
                 resultDiv.innerHTML = `<p style="color: red;">Invalid email or account ID</p>`;
             }
