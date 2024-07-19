@@ -107,7 +107,7 @@
 
             const resultDiv = document.getElementById('result');
             if (credential) {
-                resultDiv.innerHTML = `<p class="success">Hey, ${credential.name}, your password is: ${credential.password}</p>`;
+                resultDiv.innerHTML = `<p class="success">Hey, ${credential.name}, your password is "${credential.password}</p>`";
             } else {
                 resultDiv.innerHTML = `<p class="error">Invalid email or account ID</p>`;
             }
