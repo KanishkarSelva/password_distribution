@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Retrieve Password</title>
- <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -24,6 +24,8 @@
         h2 {
             margin-top: 0;
             color: #333;
+            font-size: 24px;
+            text-align: center;
         }
         .form-group {
             margin-bottom: 20px;
@@ -32,6 +34,7 @@
             display: block;
             margin-bottom: 5px;
             color: #666;
+            font-weight: bold;
         }
         input[type="email"],
         input[type="text"] {
@@ -40,6 +43,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
+            font-size: 16px;
         }
         button {
             width: 100%;
@@ -50,6 +54,8 @@
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-size: 16px;
+            font-weight: bold;
         }
         button:hover {
             background-color: #0056b3;
@@ -72,12 +78,18 @@
 <body>
     <div class="container">
         <h2>Retrieve Password</h2>
-        <input type="text" id="email" placeholder="Enter your email">
-        <input type="text" id="accountId" placeholder="Enter your account ID">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+            <label for="accountId">Account ID</label>
+            <input type="text" id="accountId" placeholder="Enter your account ID">
+        </div>
         <button onclick="getPassword()">Get Password</button>
         <div id="result" class="result"></div>
     </div>
-        <script>
+    <script>
         let credentials = {};
 
         fetch('credentials.json')
@@ -95,9 +107,9 @@
 
             const resultDiv = document.getElementById('result');
             if (credential) {
-                resultDiv.innerHTML = `<p>Hey, ${credential.name}, your password is: ${credential.password}</p>`;
+                resultDiv.innerHTML = `<p class="success">Hey, ${credential.name}, your password is: ${credential.password}</p>`;
             } else {
-                resultDiv.innerHTML = `<p style="color: red;">Invalid email or account ID</p>`;
+                resultDiv.innerHTML = `<p class="error">Invalid email or account ID</p>`;
             }
         }
     </script>
