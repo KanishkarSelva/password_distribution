@@ -49,7 +49,7 @@
         <button onclick="getPassword()">Get Password</button>
         <div id="result" class="result"></div>
     </div>
-    <script>
+        <script>
         let credentials = {};
 
         fetch('credentials.json')
@@ -60,7 +60,7 @@
             .catch(error => console.error('Error loading credentials:', error));
 
         function getPassword() {
-            const email = document.getElementById('email').value.trim();
+            const email = document.getElementById('email').value.trim().toLowerCase();
             const accountId = document.getElementById('accountId').value.trim();
             const key = email + accountId;
             const credential = credentials[key];
