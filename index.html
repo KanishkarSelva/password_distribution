@@ -1,33 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Retrieve Password</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Recovery</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         .container {
-            max-width: 500px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            max-width: 400px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        input[type="email"],
         input[type="text"] {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 10px;
             background-color: #007BFF;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #0056b3;
@@ -35,43 +59,68 @@
         .result {
             margin-top: 20px;
             padding: 10px;
+            border-radius: 4px;
+            background-color: #f8f9fa;
             border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+        }
+        .error {
+            color: #dc3545;
+        }
+        .success {
+            color: #28a745;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Retrieve Password</h2>
-        <input type="text" id="email" placeholder="Enter your email">
-        <input type="text" id="accountId" placeholder="Enter your account ID">
-        <button onclick="getPassword()">Get Password</button>
-        <div id="result" class="result"></div>
+        <h2>Password Recovery</h2>
+        <form id="recoveryForm">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="accountId">Account ID:</label>
+                <input type="text" id="accountId" required>
+            </div>
+            <button type="submit">Recover Password</button>
+        </form>
+        <div id="result" class="result" style="display: none;"></div>
     </div>
     <script>
-        let credentials = {};
-
-        fetch('credentials.json')
-            .then(response => response.json())
-            .then(data => {
-                credentials = data;
-            })
-            .catch(error => console.error('Error loading credentials:', error));
-
-        function getPassword() {
-            const email = document.getElementById('email').value.trim();
-            const accountId = document.getElementById('accountId').value.trim();
-            const key = email + accountId;
-            const credential = credentials[key];
-
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('recoveryForm');
             const resultDiv = document.getElementById('result');
-            if (credential) {
-                resultDiv.innerHTML = `<p>Hey, ${credential.name}, your password is: ${credential.password}</p>`;
-            } else {
-                resultDiv.innerHTML = `<p style="color: red;">Invalid email or account ID</p>`;
-            }
-        }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value.trim();
+                const accountId = document.getElementById('accountId').value.trim();
+
+                try {
+                    const response = await fetch('/api/recover-password', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, accountId }),
+                    });
+
+                    const data = await response.json();
+
+                    resultDiv.style.display = 'block';
+                    if (response.ok) {
+                        resultDiv.innerHTML = `<p class="success">A password reset link has been sent to your email address.</p>`;
+                    } else {
+                        resultDiv.innerHTML = `<p class="error">${data.message || 'An error occurred. Please try again.'}</p>`;
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    resultDiv.style.display = 'block';
+                    resultDiv.innerHTML = '<p class="error">An unexpected error occurred. Please try again later.</p>';
+                }
+            });
+        });
     </script>
 </body>
 </html>
