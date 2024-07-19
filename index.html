@@ -88,39 +88,28 @@
         <div id="result" class="result" style="display: none;"></div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('recoveryForm');
+        let credentials = {};
+
+        fetch('credentials.json')
+            .then(response => response.json())
+            .then(data => {
+                credentials = data;
+            })
+            .catch(error => console.error('Error loading credentials:', error));
+
+        function getPassword() {
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const accountId = document.getElementById('accountId').value.trim();
+            const key = email + accountId;
+            const credential = credentials[key];
+
             const resultDiv = document.getElementById('result');
-
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const email = document.getElementById('email').value.trim();
-                const accountId = document.getElementById('accountId').value.trim();
-
-                try {
-                    const response = await fetch('/api/recover-password', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ email, accountId }),
-                    });
-
-                    const data = await response.json();
-
-                    resultDiv.style.display = 'block';
-                    if (response.ok) {
-                        resultDiv.innerHTML = `<p class="success">A password reset link has been sent to your email address.</p>`;
-                    } else {
-                        resultDiv.innerHTML = `<p class="error">${data.message || 'An error occurred. Please try again.'}</p>`;
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    resultDiv.style.display = 'block';
-                    resultDiv.innerHTML = '<p class="error">An unexpected error occurred. Please try again later.</p>';
-                }
-            });
-        });
+            if (credential) {
+                resultDiv.innerHTML = `<p>Hey, ${credential.name}, your password is: ${credential.password}</p>`;
+            } else {
+                resultDiv.innerHTML = `<p style="color: red;">Invalid email or account ID</p>`;
+            }
+        }
     </script>
 </body>
 </html>
