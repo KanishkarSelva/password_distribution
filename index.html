@@ -91,6 +91,26 @@
     </div>
     <script>
         let credentials = {};
+
+        function getPassword() {
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const accountId = document.getElementById('accountId').value.trim();
+            const key = email + accountId;
+            const credential = credentials[key];
+            const resultDiv = document.getElementById('result');
+
+            if (Object.keys(credentials).length === 0) {
+                resultDiv.innerHTML = '<p class="error">Loading credentials, please try again in a moment.</p>';
+                return;
+            }
+
+            if (credential) {
+                resultDiv.innerHTML = `<p class="success">Hey, ${credential.name}, your password is "${credential.password}".</p>`;
+            } else {
+                resultDiv.innerHTML = `<p class="error">Invalid email or account ID</p>`;
+            }
+        }
+
         fetch('credentials.json')
             .then(response => response.json())
             .then(data => {
@@ -100,20 +120,6 @@
                 console.error('Error loading credentials:', error);
                 document.getElementById('result').innerHTML = '<p class="error">An error occurred while loading the credentials. Please try again later.</p>';
             });
-
-        function getPassword() {
-            const email = document.getElementById('email').value.trim().toLowerCase();
-            const accountId = document.getElementById('accountId').value.trim();
-            const key = email + accountId;
-            const credential = credentials[key];
-            const resultDiv = document.getElementById('result');
-
-            if (credential) {
-                resultDiv.innerHTML = `<p class="success">Hey, ${credential.name}, your password is "${credential.password}".</p>`;
-            } else {
-                resultDiv.innerHTML = `<p class="error">Invalid email or account ID</p>`;
-            }
-        }
     </script>
 </body>
 </html>
