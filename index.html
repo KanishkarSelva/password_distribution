@@ -105,7 +105,7 @@
         function getPassword() {
             const email = document.getElementById('email').value.trim().toUpperCase();
             const accountId = document.getElementById('accountId').value.trim().toUpperCase();
-            const key = email + accountId;
+            const key = accountId + email;
             const credential = credentials[key];
             const resultDiv = document.getElementById('result');
 
