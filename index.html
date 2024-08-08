@@ -109,11 +109,6 @@
             const credential = credentials[key];
             const resultDiv = document.getElementById('result');
 
-            if (Object.keys(credentials).length === 0) {
-                resultDiv.innerHTML = '<p class="error">Loading credentials, please try again in a moment.</p>';
-                return;
-            }
-
             if (credential) {
                 resultDiv.innerHTML = `<p class="success">Hey, ${credential.name}, your password is "${credential.password}".</p>`;
             } else {
