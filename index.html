@@ -91,23 +91,25 @@
     </div>
     <script>
         let credentials = {};
-
         fetch('credentials.json')
             .then(response => response.json())
             .then(data => {
                 credentials = data;
             })
-            .catch(error => console.error('Error loading credentials:', error));
+            .catch(error => {
+                console.error('Error loading credentials:', error);
+                document.getElementById('result').innerHTML = '<p class="error">An error occurred while loading the credentials. Please try again later.</p>';
+            });
 
         function getPassword() {
             const email = document.getElementById('email').value.trim().toLowerCase();
             const accountId = document.getElementById('accountId').value.trim();
             const key = email + accountId;
             const credential = credentials[key];
-
             const resultDiv = document.getElementById('result');
+
             if (credential) {
-                resultDiv.innerHTML = `<p class="success">Hey, ${credential.name}, your password is "${credential.password}</p>`";
+                resultDiv.innerHTML = `<p class="success">Hey, ${credential.name}, your password is "${credential.password}".</p>`;
             } else {
                 resultDiv.innerHTML = `<p class="error">Invalid email or account ID</p>`;
             }
