@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Retrieve Password</title>
-    <style>
+<style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -92,6 +92,16 @@
     <script>
         let credentials = {};
 
+        fetch('credentials.json')
+            .then(response => response.json())
+            .then(data => {
+                credentials = data;
+            })
+            .catch(error => {
+                console.error('Error loading credentials:', error);
+                document.getElementById('result').innerHTML = '<p class="error">An error occurred while loading the credentials. Please try again later.</p>';
+            });
+
         function getPassword() {
             const email = document.getElementById('email').value.trim().toLowerCase();
             const accountId = document.getElementById('accountId').value.trim();
@@ -104,22 +114,12 @@
                 return;
             }
 
-           if (credential) {
-                resultDiv.innerHTML = `<p class="success">Hey, ${credential.name}, your password is "${credential.password}". Please join this WhatsApp group for Batch 4: <a href="https://chat.whatsapp.com/IT3AqmGeNF6GEjbYGe54Me" target="_blank">https://chat.whatsapp.com/IT3AqmGeNF6GEjbYGe54Me</a></p>`;
+            if (credential) {
+                resultDiv.innerHTML = `<p class="success">Hey, ${credential.name}, your password is "${credential.password}".</p>`;
             } else {
                 resultDiv.innerHTML = `<p class="error">Invalid email or account ID</p>`;
             }
         }
-
-        fetch('credentials.json')
-            .then(response => response.json())
-            .then(data => {
-                credentials = data;
-            })
-            .catch(error => {
-                console.error('Error loading credentials:', error);
-                document.getElementById('result').innerHTML = '<p class="error">An error occurred while loading the credentials. Please try again later.</p>';
-            });
     </script>
 </body>
 </html>
